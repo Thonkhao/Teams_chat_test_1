@@ -137,16 +137,15 @@ function notify_http($method, $url, array $headers = [], $body = null)
     $retry = preg_match('/^Retry-After:\s*(\d+)/mi', $hdr, $m) ? (int) $m[1] : 3;
 
     return ['code' => $code, 'json' => json_decode(substr($resp, $hsize), true), 'retry' => $retry];
-
 }
-
+// อ่าน callback URL สำหรับเชื่อมบัญชีกลางผ่านเว็บจาก config.php
 function notify_redirect_uri()
 {
     $config = require __DIR__ . '/../config.php';
     $uri = $config['notify_redirect_uri'] ?? '';
     if (!is_string($uri) || !filter_var($uri, FILTER_VALIDATE_URL)
         || parse_url($uri, PHP_URL_SCHEME) !== 'https') {
-        throw new RuntimeException('Set notify_redirect_uri to the HTTPS callback URL in config.php');
+        throw new RuntimeException('กรุณาตั้ง notify_redirect_uri ใน config.php เป็น URL callback แบบ HTTPS');
     }
     return $uri;
 }
@@ -169,7 +168,7 @@ function notify_access_token()
 
     if (!$t || empty($t['refresh_token'])) {
 
-        throw new RuntimeException('ยังไม่ได้เชื่อมบัญชีกลาง: เปิด dbconnect/notify_connect.php ผ่านเว็บก่อน');
+        throw new RuntimeException('ยังไม่ได้เชื่อมบัญชีกลาง: กรุณาเปิด /dbconnect/notify_connect.php ผ่านเว็บเพื่อล็อกอิน Microsoft');
 
     }
 

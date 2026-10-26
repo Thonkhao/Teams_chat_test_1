@@ -140,6 +140,17 @@ function notify_http($method, $url, array $headers = [], $body = null)
 
 }
 
+function notify_redirect_uri()
+{
+    $config = require __DIR__ . '/../config.php';
+    $uri = $config['notify_redirect_uri'] ?? '';
+    if (!is_string($uri) || !filter_var($uri, FILTER_VALIDATE_URL)
+        || parse_url($uri, PHP_URL_SCHEME) !== 'https') {
+        throw new RuntimeException('Set notify_redirect_uri to the HTTPS callback URL in config.php');
+    }
+    return $uri;
+}
+
 function notify_token_endpoint()
 
 {
@@ -158,7 +169,7 @@ function notify_access_token()
 
     if (!$t || empty($t['refresh_token'])) {
 
-        throw new RuntimeException('ยังไม่ได้เชื่อมบัญชีกลาง: รัน php notify_setup.php ก่อน');
+        throw new RuntimeException('ยังไม่ได้เชื่อมบัญชีกลาง: เปิด dbconnect/notify_connect.php ผ่านเว็บก่อน');
 
     }
 

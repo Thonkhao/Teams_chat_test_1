@@ -16,7 +16,7 @@ function notify_env($k)
 }
 function notify_token_file()
 {
-    return __DIR__ . '/storage/notify_token.dat';
+    return __DIR__ . '/dbconnect/storage/notify_token.dat';
 }
 function notify_key()
 {
@@ -72,7 +72,7 @@ function notify_http($method, $url, array $headers = [], $body = null)
 // อ่าน callback URL สำหรับเชื่อมบัญชีกลางผ่านเว็บจาก config.php
 function notify_redirect_uri()
 {
-    $config = require __DIR__ . '/../config.php';
+    $config = require __DIR__ . '/config.php';
     $uri = $config['notify_redirect_uri'] ?? '';
     if (!is_string($uri) || !filter_var($uri, FILTER_VALIDATE_URL)
         || parse_url($uri, PHP_URL_SCHEME) !== 'https') {
@@ -89,7 +89,7 @@ function notify_access_token()
 {
     $t = notify_token_load();
     if (!$t || empty($t['refresh_token'])) {
-        throw new RuntimeException('ยังไม่ได้เชื่อมบัญชีกลาง: กรุณาเปิด /dbconnect/notify_connect.php ผ่านเว็บเพื่อล็อกอิน Microsoft');
+        throw new RuntimeException('ยังไม่ได้เชื่อมบัญชีกลาง: กรุณาเปิด /notify_connect.php ผ่านเว็บเพื่อล็อกอิน Microsoft');
     }
     if (!empty($t['access_token']) && ($t['expires_at'] ?? 0) > time() + 120) {
         return $t['access_token'];

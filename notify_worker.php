@@ -37,7 +37,7 @@ $currentId = null;
 $exitCode = 0;
 try {
     // ใช้ Connect.php เดิม (โหลด .env และเชื่อม DB ให้)
-    require_once __DIR__ . '/Connect.php';
+    require_once __DIR__ . '/dbconnect/Connect.php';
     $conn = DBConnection::getConnection();
     if ($send) {
         require_once __DIR__ . '/notify_lib.php';   // มี teams_notify()
